@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     let emojis: Array<String> = ["🤖", "👹", "👽", "👾", "💩", "☠️", "👺", "🤢",  "🙀"]
     @State var cardCount: Int = 4
+    @State var selectedTheme = ThemeChooserType.vehicles
     
     var body: some View {
         VStack {
@@ -39,40 +40,41 @@ struct ContentView: View {
             alignment: .bottom,
             spacing: 48
         ) {
-            vehiclesThemeChooser
-            animalsThemeChooser
-            fitnessThemeChooser
-            
+            let themes = ThemeChooserType.allCases
+            ForEach(themes.indices, id: \.self) { index in
+                let theme = themes[index]
+                themeChoosingButton(
+                    isSelected: theme == selectedTheme,
+                    description: theme.getDescription(),
+                    image: theme.getImage(),
+                    onTap: {
+                        selectedTheme = theme
+                    }
+                )
+            }
         }
     }
     
-    func themeChoosingButton(description: String, image: String) -> some View {
-        VStack(
-            content: {
+    func themeChoosingButton(
+        isSelected: Bool,
+        description: String,
+        image: String,
+        onTap: @escaping () -> Void
+    ) -> some View {
+        VStack {
+            Group {
                 Button(
                     action: {
-                        
+                        onTap()
                     }, label: {
                         Image(systemName: image)
                     }
                 ).font(.title)
                 Text(description)
-            }
-        )
+            }.foregroundColor(isSelected ? .blue : .gray)
+        }
         .imageScale(.medium)
-        
-    }
-    
-    var vehiclesThemeChooser: some View {
-        themeChoosingButton(description: "Vehicles", image: "car")
-    }
-    
-    var animalsThemeChooser: some View {
-        themeChoosingButton(description: "Animals", image: "cat")
-    }
-    
-    var fitnessThemeChooser: some View {
-        themeChoosingButton(description: "Fitness", image: "figure.basketball")
+        .foregroundColor(.blue)
     }
 }
 
