@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5119A11F2C3E26C7004D07AC /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5119A11E2C3E26C7004D07AC /* CardView.swift */; };
 		51E927242C3C64230086E2EF /* MemorizeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E927232C3C64230086E2EF /* MemorizeApp.swift */; };
 		51E927262C3C64230086E2EF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E927252C3C64230086E2EF /* ContentView.swift */; };
 		51E927282C3C64240086E2EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51E927272C3C64240086E2EF /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5119A11E2C3E26C7004D07AC /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		51E927202C3C64230086E2EF /* Memorize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memorize.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51E927232C3C64230086E2EF /* MemorizeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizeApp.swift; sourceTree = "<group>"; };
 		51E927252C3C64230086E2EF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 				51E927272C3C64240086E2EF /* Assets.xcassets */,
 				51E927292C3C64240086E2EF /* Memorize.entitlements */,
 				51E9272A2C3C64240086E2EF /* Preview Content */,
+				5119A11E2C3E26C7004D07AC /* CardView.swift */,
 			);
 			path = Memorize;
 			sourceTree = "<group>";
@@ -140,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51E927262C3C64230086E2EF /* ContentView.swift in Sources */,
+				5119A11F2C3E26C7004D07AC /* CardView.swift in Sources */,
 				51E927242C3C64230086E2EF /* MemorizeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

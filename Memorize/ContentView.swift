@@ -13,11 +13,12 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Text("Memorize!").font(.largeTitle)
             ScrollView {
                 cards
             }
             Spacer()
-            cardCountAdjusters
+            themeChoosingButtons
         }
         .padding()
     }
@@ -33,55 +34,48 @@ struct ContentView: View {
         }.foregroundColor(.orange)
     }
     
-    var cardCountAdjusters: some View {
-        HStack {
-            cardRemover
-            Spacer()
-            cardAdder
+    var themeChoosingButtons: some View {
+        HStack(
+            alignment: .bottom,
+            spacing: 48
+        ) {
+            vehiclesThemeChooser
+            animalsThemeChooser
+            fitnessThemeChooser
+            
         }
-        .imageScale(.large)
-        .font(.largeTitle)
     }
     
-    func cardCountAdjuster(by offset: Int, image: String) -> some View {
-        Button(
-            action: {
-                cardCount += offset
-            }, label: {
-                Image(systemName: image)
+    func themeChoosingButton(description: String, image: String) -> some View {
+        VStack(
+            content: {
+                Button(
+                    action: {
+                        
+                    }, label: {
+                        Image(systemName: image)
+                    }
+                ).font(.title)
+                Text(description)
             }
         )
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
-    }
-    var cardRemover: some View {
-        cardCountAdjuster(by: -1, image: "minus.rectangle.fill")
+        .imageScale(.medium)
+        
     }
     
-    var cardAdder: some View {
-        cardCountAdjuster(by: +1, image: "plus.rectangle.fill")
+    var vehiclesThemeChooser: some View {
+        themeChoosingButton(description: "Vehicles", image: "car")
+    }
+    
+    var animalsThemeChooser: some View {
+        themeChoosingButton(description: "Animals", image: "cat")
+    }
+    
+    var fitnessThemeChooser: some View {
+        themeChoosingButton(description: "Fitness", image: "figure.basketball")
     }
 }
 
 #Preview {
     ContentView()
-}
-
-struct CardView : View {
-    @State var isFaceUp: Bool = true
-    let content: String
-    
-    var body: some View {
-        ZStack(
-            content: {
-            let base = RoundedRectangle(cornerRadius: 12)
-            Group {
-                base.fill(.white)
-                base.strokeBorder(lineWidth: 2.0)
-                Text(content).font(.largeTitle)
-            }.opacity(isFaceUp ? 1 : 0)
-            base.fill().opacity(isFaceUp ? 0.0 : 1.0)
-        }).onTapGesture {
-            isFaceUp.toggle()
-        }
-    }
 }
