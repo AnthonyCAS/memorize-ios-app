@@ -9,12 +9,11 @@ import Foundation
 import SwiftUI
 
 struct CardView : View {
-    @State var isFaceUp: Bool = true
+    @State var isFaceUp: Bool = false
     let content: String
     
     var body: some View {
-        ZStack(
-            content: {
+        ZStack {
             let base = RoundedRectangle(cornerRadius: 12)
             Group {
                 base.fill(.white)
@@ -22,7 +21,8 @@ struct CardView : View {
                 Text(content).font(.largeTitle)
             }.opacity(isFaceUp ? 1 : 0)
             base.fill().opacity(isFaceUp ? 0.0 : 1.0)
-        }).onTapGesture {
+        }
+        .onTapGesture {
             isFaceUp.toggle()
         }
     }

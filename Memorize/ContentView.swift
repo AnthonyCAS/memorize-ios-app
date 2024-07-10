@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     @State var emojis = ThemeChooserType.vehicles.getEmojis()
-    @State var cardCount: Int = 8
     @State var selectedTheme = ThemeChooserType.vehicles
+    // starting with 4 pairs of cards which is the minimun value as described in the task
+    @State var cardCount: Int = 8
     let minCardCount = 8
     
     var body: some View {
@@ -45,6 +46,15 @@ struct ContentView: View {
         return minBestWidth
     }
     
+    func makeNewEmojisByTheme(by theme: ThemeChooserType) {
+        let themeEmojis = theme.getEmojis()
+        let randomIndex = Int.random(in: 4..<themeEmojis.endIndex)
+        let newEmojis = Array(themeEmojis[0..<randomIndex])
+        selectedTheme = theme
+        emojis = (newEmojis + newEmojis).shuffled()
+        cardCount = emojis.count
+    }
+    
     var themeChoosingButtons: some View {
         HStack(
             alignment: .bottom,
@@ -58,11 +68,7 @@ struct ContentView: View {
                     description: theme.getDescription(),
                     image: theme.getImage(),
                     onTap: {
-                        let newEmojis = theme.getEmojis().shuffled()
-                        selectedTheme = theme
-                        let randomIndex = Int.random(in: 4..<newEmojis.endIndex)
-                        emojis = Array(newEmojis[0..<randomIndex]) + Array(newEmojis[0..<randomIndex])
-                        cardCount = randomIndex * 2
+                        makeNewEmojisByTheme(by: theme)
                     }
                 )
             }
