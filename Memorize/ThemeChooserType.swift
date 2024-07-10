@@ -10,7 +10,7 @@ import Foundation
 enum ThemeChooserType: CaseIterable {
     case vehicles
     case animals
-    case fitness
+    case fruits
     
     
     func getDescription() -> String {
@@ -19,8 +19,8 @@ enum ThemeChooserType: CaseIterable {
             "Vehicles"
         case .animals:
             "Animals"
-        case .fitness:
-            "Fitness"
+        case .fruits:
+            "Fruits"
         }
     }
     
@@ -30,19 +30,19 @@ enum ThemeChooserType: CaseIterable {
             "car"
         case .animals:
             "cat"
-        case .fitness:
-            "figure.basketball"
+        case .fruits:
+            "carrot.fill"
         }
     }
     
     func getEmojis() -> Array<String> {
         switch self {
         case .vehicles:
-            ["🤖", "👹", "👽", "👾", "💩", "☠️", "👺", "🤢",  "🙀"]
+            ["✈️","🚘", "🛺", "🚚", "🚑", "🚀", "🚁", "🛵", "🚒", "🏎️", "⛵️"]
         case .animals:
-            ["🤖", "👹", "👽", "👾", "💩", "☠️", "👺", "🤢",  "🙀"]
-        case .fitness:
-            ["🤖", "👹", "👽", "👾", "💩", "☠️", "👺", "🤢",  "🙀"]
+            ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐷", "🐸"]
+        case .fruits:
+            ["🍏", "🍎", "🍐", "🍊", "🍋", "🍋‍🟩", "🍌", "🍉", "🍇", "🍓", "🍒"]
         }
     }
 }
