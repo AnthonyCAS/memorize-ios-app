@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  EmojiMemoryGameView.swift
 //  Memorize
 //
 //  Created by zhira on 7/8/24.
@@ -7,54 +7,58 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @State var emojis = ThemeChooserType.vehicles.getEmojis()
-    @State var selectedTheme = ThemeChooserType.vehicles
-    // starting with 4 pairs of cards which is the minimun value as described in the task
-    @State var cardCount: Int = 8
-    let minCardCount = 8
+struct EmojiMemoryGameView: View {
     
+    @ObservedObject var viewModel: EmojiMemoryGame
+    private let minCardCount = 8
+
     var body: some View {
         VStack {
             Text("Memorize!").font(.largeTitle)
             ScrollView {
                 cards
+                    .animation(.default, value: viewModel.cards)
             }
             Spacer()
             themeChoosingButtons
         }
         .padding()
     }
-    
+
     var cards: some View {
         LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: widthThatBestFits(count: cardCount)))]
-         ) {
-            ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: emojis[index])
-                    .aspectRatio(2/3, contentMode: .fit)
+            columns: [GridItem(.adaptive(minimum: widthThatBestFits(count: viewModel.cards.count)), spacing: 0)],
+            spacing: 0
+        ) {
+            ForEach(viewModel.cards) { card in
+                CardView(card)
+                    .aspectRatio(2 / 3, contentMode: .fit)
+                    .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }.foregroundColor(.orange)
     }
-    
+
     // returns a responsive width depending of the available screen space
     func widthThatBestFits(count cardCount: Int) -> CGFloat {
         let width = UIScreen.main.bounds.width
         let height = UIScreen.main.bounds.height
         let area = width * height
-        let minBestWidth = sqrt(area / CGFloat(cardCount * (minCardCount / 2 + 1)))
+        let minBestWidth = sqrt(area / CGFloat(cardCount * (minCardCount / 2)))
         return minBestWidth
     }
-    
-    func makeNewEmojisByTheme(by theme: ThemeChooserType) {
-        let themeEmojis = theme.getEmojis()
-        let randomIndex = Int.random(in: 4..<themeEmojis.endIndex)
-        let newEmojis = Array(themeEmojis[0..<randomIndex])
-        selectedTheme = theme
-        emojis = (newEmojis + newEmojis).shuffled()
-        cardCount = emojis.count
-    }
-    
+
+//    func makeNewEmojisByTheme(by theme: ThemeChooserType) {
+//        let themeEmojis = theme.getEmojis()
+//        let randomIndex = Int.random(in: 4..<themeEmojis.endIndex)
+//        let newEmojis = Array(themeEmojis[0..<randomIndex])
+//        selectedTheme = theme
+//        emojis = (newEmojis + newEmojis).shuffled()
+//        cardCount = emojis.count
+//    }
+
     var themeChoosingButtons: some View {
         HStack(
             alignment: .bottom,
@@ -64,17 +68,17 @@ struct ContentView: View {
             ForEach(themes.indices, id: \.self) { index in
                 let theme = themes[index]
                 themeChoosingButton(
-                    isSelected: theme == selectedTheme,
+                    isSelected: true,
                     description: theme.getDescription(),
                     image: theme.getImage(),
                     onTap: {
-                        makeNewEmojisByTheme(by: theme)
+                        viewModel.shuffle()
                     }
                 )
             }
         }
     }
-    
+
     func themeChoosingButton(
         isSelected: Bool,
         description: String,
@@ -99,5 +103,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    EmojiMemoryGameView(viewModel: EmojiMemoryGame())
 }
