@@ -8,23 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis: Array<String> = ["🤖", "👹", "👽", "👾", "💩", "☠️", "👺", "🤢",  "🙀"]
-    @State var cardCount: Int = 4
+    @State var emojis = ThemeChooserType.vehicles.getEmojis()
+    @State var selectedTheme = ThemeChooserType.vehicles
+    // starting with 4 pairs of cards which is the minimun value as described in the task
+    @State var cardCount: Int = 8
+    let minCardCount = 8
     
     var body: some View {
         VStack {
+            Text("Memorize!").font(.largeTitle)
             ScrollView {
                 cards
             }
             Spacer()
-            cardCountAdjusters
+            themeChoosingButtons
         }
         .padding()
     }
     
     var cards: some View {
         LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 120))]
+            columns: [GridItem(.adaptive(minimum: widthThatBestFits(count: cardCount)))]
          ) {
             ForEach(0..<cardCount, id: \.self) { index in
                 CardView(content: emojis[index])
@@ -33,55 +37,67 @@ struct ContentView: View {
         }.foregroundColor(.orange)
     }
     
-    var cardCountAdjusters: some View {
-        HStack {
-            cardRemover
-            Spacer()
-            cardAdder
-        }
-        .imageScale(.large)
-        .font(.largeTitle)
+    // returns a responsive width depending of the available screen space
+    func widthThatBestFits(count cardCount: Int) -> CGFloat {
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        let area = width * height
+        let minBestWidth = sqrt(area / CGFloat(cardCount * (minCardCount / 2 + 1)))
+        return minBestWidth
     }
     
-    func cardCountAdjuster(by offset: Int, image: String) -> some View {
-        Button(
-            action: {
-                cardCount += offset
-            }, label: {
-                Image(systemName: image)
+    func makeNewEmojisByTheme(by theme: ThemeChooserType) {
+        let themeEmojis = theme.getEmojis()
+        let randomIndex = Int.random(in: 4..<themeEmojis.endIndex)
+        let newEmojis = Array(themeEmojis[0..<randomIndex])
+        selectedTheme = theme
+        emojis = (newEmojis + newEmojis).shuffled()
+        cardCount = emojis.count
+    }
+    
+    var themeChoosingButtons: some View {
+        HStack(
+            alignment: .bottom,
+            spacing: 48
+        ) {
+            let themes = ThemeChooserType.allCases
+            ForEach(themes.indices, id: \.self) { index in
+                let theme = themes[index]
+                themeChoosingButton(
+                    isSelected: theme == selectedTheme,
+                    description: theme.getDescription(),
+                    image: theme.getImage(),
+                    onTap: {
+                        makeNewEmojisByTheme(by: theme)
+                    }
+                )
             }
-        )
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
-    }
-    var cardRemover: some View {
-        cardCountAdjuster(by: -1, image: "minus.rectangle.fill")
+        }
     }
     
-    var cardAdder: some View {
-        cardCountAdjuster(by: +1, image: "plus.rectangle.fill")
+    func themeChoosingButton(
+        isSelected: Bool,
+        description: String,
+        image: String,
+        onTap: @escaping () -> Void
+    ) -> some View {
+        VStack {
+            Group {
+                Button(
+                    action: {
+                        onTap()
+                    }, label: {
+                        Image(systemName: image)
+                    }
+                ).font(.title)
+                Text(description)
+            }.foregroundColor(isSelected ? .blue : .gray)
+        }
+        .imageScale(.medium)
+        .foregroundColor(.blue)
     }
 }
 
 #Preview {
     ContentView()
-}
-
-struct CardView : View {
-    @State var isFaceUp: Bool = true
-    let content: String
-    
-    var body: some View {
-        ZStack(
-            content: {
-            let base = RoundedRectangle(cornerRadius: 12)
-            Group {
-                base.fill(.white)
-                base.strokeBorder(lineWidth: 2.0)
-                Text(content).font(.largeTitle)
-            }.opacity(isFaceUp ? 1 : 0)
-            base.fill().opacity(isFaceUp ? 0.0 : 1.0)
-        }).onTapGesture {
-            isFaceUp.toggle()
-        }
-    }
 }
