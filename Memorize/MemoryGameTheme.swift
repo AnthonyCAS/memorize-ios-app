@@ -13,6 +13,9 @@ enum MemoryGameTheme: CaseIterable, Identifiable {
     case vehicles
     case animals
     case fruits
+    case halloween
+    case flags
+    case faces
 
     var name: String {
         switch self {
@@ -22,6 +25,12 @@ enum MemoryGameTheme: CaseIterable, Identifiable {
             "Animals"
         case .fruits:
             "Fruits"
+        case .halloween:
+            "Halloween"
+        case .flags:
+            "Flags"
+        case .faces:
+            "Faces"
         }
     }
 
@@ -33,6 +42,12 @@ enum MemoryGameTheme: CaseIterable, Identifiable {
             ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐷", "🐸"]
         case .fruits:
             ["🍏", "🍎", "🍐", "🍊", "🍋", "🍋‍🟩", "🍌", "🍉", "🍇", "🍓", "🍒"]
+        case .halloween:
+            ["🍏", "🍎", "🍐", "🍊", "🍋", "🍋‍🟩", "🍌", "🍉", "🍇", "🍓", "🍒"]
+        case .flags:
+            ["🍏", "🍎", "🍐", "🍊", "🍋", "🍋‍🟩", "🍌", "🍉", "🍇", "🍓", "🍒"]
+        case .faces:
+            ["🍏", "🍎", "🍐", "🍊", "🍋", "🍋‍🟩", "🍌", "🍉", "🍇", "🍓", "🍒"]
         }
     }
 
@@ -41,9 +56,15 @@ enum MemoryGameTheme: CaseIterable, Identifiable {
         case .vehicles:
             "blue"
         case .animals:
-            "gray"
+            "green"
         case .fruits:
             "orange"
+        case .halloween:
+            "red"
+        case .flags:
+            "yellow"
+        case .faces:
+            "gray"
         }
     }
 

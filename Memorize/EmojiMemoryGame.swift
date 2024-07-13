@@ -38,6 +38,9 @@ class EmojiMemoryGame: ObservableObject {
         case "blue": .blue
         case "gray": .gray
         case "orange": .orange
+        case "green": .green
+        case "red": .red
+        case "yellow": .yellow
         default: .white
         }
     }
