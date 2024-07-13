@@ -9,11 +9,11 @@ import Foundation
 
 enum MemoryGameTheme: CaseIterable, Identifiable {
     var id: Self { self }
-    
+
     case vehicles
     case animals
     case fruits
-    
+
     var name: String {
         switch self {
         case .vehicles:
@@ -24,7 +24,7 @@ enum MemoryGameTheme: CaseIterable, Identifiable {
             "Fruits"
         }
     }
-    
+
     var emojis: [String] {
         switch self {
         case .vehicles:
@@ -35,7 +35,7 @@ enum MemoryGameTheme: CaseIterable, Identifiable {
             ["🍏", "🍎", "🍐", "🍊", "🍋", "🍋‍🟩", "🍌", "🍉", "🍇", "🍓", "🍒"]
         }
     }
-    
+
     var color: String {
         switch self {
         case .vehicles:
@@ -46,8 +46,12 @@ enum MemoryGameTheme: CaseIterable, Identifiable {
             "orange"
         }
     }
-    
-    var numberOfPairsOfCard: Int {
-        .random(in: 4 ..< 20)
+
+    var numberOfPairs: Int {
+        .random(in: 4 ..< emojis.endIndex)
+    }
+
+    static func getRandomTheme() -> Self {
+        .allCases[.random(in: MemoryGameTheme.allCases.indices)]
     }
 }

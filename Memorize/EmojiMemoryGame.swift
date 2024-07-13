@@ -8,38 +8,46 @@
 import Foundation
 
 class EmojiMemoryGame: ObservableObject {
-    private static let emojis = ["✈️","🚘", "🛺", "🚚", "🚑", "🚀", "🚁", "🛵", "🚒", "🏎️", "⛵️"]
+    @Published private var model: MemoryGame<String>?
     
-    static func makeMemoryGameModel() -> MemoryGame<String> {
-        MemoryGame(numberOfPairOfCards: 11) { pairIndex in
-            if emojis.indices.contains(pairIndex) {
-                emojis[pairIndex]
+    private var chosenTheme: MemoryGameTheme
+    
+    init() {
+        chosenTheme = MemoryGameTheme.getRandomTheme()
+        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
+    }
+
+    static func makeMemoryGameModel(by theme: MemoryGameTheme) -> MemoryGame<String> {
+        let suffledEmojis = theme.emojis.shuffled()
+        return MemoryGame(numberOfPairOfCards: theme.numberOfPairs) { pairIndex in
+            if suffledEmojis.indices.contains(pairIndex) {
+                suffledEmojis[pairIndex]
             } else {
                 "⁉️"
             }
         }
     }
     
-    @Published private var model = makeMemoryGameModel()
+    var themeName: String {
+        chosenTheme.name
+    }
     
-//    private var chosenTheme: MemoryGameTheme
-//    
-//    init(model: MemoryGame<String> = makeMemoryGameModel(), chosenTheme: MemoryGameTheme) {
-//        self.model = model
-//        self.chosenTheme = chosenTheme
-//    }
-    
-    var cards: Array<MemoryGame<String>.Card> {
-        model.cards
+    var cards: [MemoryGame<String>.Card] {
+        model?.cards ?? []
     }
     
     // MARK: - Intents
     
     func choose(_ card: MemoryGame<String>.Card) {
-        model.choose(card)
+        model?.choose(card)
     }
     
     func shuffle() {
-        model.shuffle()
+        model?.shuffle()
+    }
+    
+    func startNewGame() {
+        chosenTheme = MemoryGameTheme.getRandomTheme()
+        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)        
     }
 }
