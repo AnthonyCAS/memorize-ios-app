@@ -11,14 +11,15 @@ import SwiftUI
 class EmojiMemoryGame: ObservableObject {
     @Published private var model: MemoryGame<String>?
     
-    private var chosenTheme: MemoryGameTheme
+    private var chosenTheme: EmojiMemoryGameTheme
     
     init() {
-        chosenTheme = MemoryGameTheme.getRandomTheme()
+        chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
         model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
+        model?.shuffle()
     }
 
-    static func makeMemoryGameModel(by theme: MemoryGameTheme) -> MemoryGame<String> {
+    private static func makeMemoryGameModel(by theme: EmojiMemoryGameTheme) -> MemoryGame<String> {
         let suffledEmojis = theme.emojis.shuffled()
         return MemoryGame(numberOfPairOfCards: theme.numberOfPairs) { pairIndex in
             if suffledEmojis.indices.contains(pairIndex) {
@@ -33,15 +34,17 @@ class EmojiMemoryGame: ObservableObject {
         chosenTheme.name
     }
     
+    // interpret emoji card color from the model into a swiftui color struct
+    // if the color is unknow a black color is used instead
     var themeColor: Color {
         switch chosenTheme.color {
         case "blue": .blue
-        case "gray": .gray
+        case "brown": .brown
         case "orange": .orange
         case "green": .green
         case "red": .red
         case "yellow": .yellow
-        default: .white
+        default: .black
         }
     }
     
@@ -55,12 +58,13 @@ class EmojiMemoryGame: ObservableObject {
         model?.choose(card)
     }
     
-    func shuffle() {
-        model?.shuffle()
+    func startNewGame() {
+        chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
+        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
+        shuffle()
     }
     
-    func startNewGame() {
-        chosenTheme = MemoryGameTheme.getRandomTheme()
-        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
+    private func shuffle() {
+        model?.shuffle()
     }
 }

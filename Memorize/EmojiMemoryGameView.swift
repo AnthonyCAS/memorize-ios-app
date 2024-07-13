@@ -31,7 +31,7 @@ struct EmojiMemoryGameView: View {
         .padding()
     }
 
-    var cards: some View {
+    private var cards: some View {
         LazyVGrid(
             columns: [GridItem(.adaptive(minimum: 80), spacing: 0)],
             spacing: 0
