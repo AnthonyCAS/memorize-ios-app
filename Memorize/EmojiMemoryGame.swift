@@ -22,6 +22,13 @@ class EmojiMemoryGame: ObservableObject {
     
     @Published private var model = makeMemoryGameModel()
     
+//    private var chosenTheme: MemoryGameTheme
+//    
+//    init(model: MemoryGame<String> = makeMemoryGameModel(), chosenTheme: MemoryGameTheme) {
+//        self.model = model
+//        self.chosenTheme = chosenTheme
+//    }
+    
     var cards: Array<MemoryGame<String>.Card> {
         model.cards
     }

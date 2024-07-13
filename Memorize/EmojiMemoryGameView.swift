@@ -20,7 +20,10 @@ struct EmojiMemoryGameView: View {
                     .animation(.default, value: viewModel.cards)
             }
             Spacer()
-            themeChoosingButtons
+            Button(action: {}) {
+                Text("New Game")
+            }
+            .buttonStyle(GrowingButton())
         }
         .padding()
     }
@@ -50,7 +53,7 @@ struct EmojiMemoryGameView: View {
         return minBestWidth
     }
 
-//    func makeNewEmojisByTheme(by theme: ThemeChooserType) {
+//    func makeNewEmojisByTheme(by theme: MemoryGameTheme) {
 //        let themeEmojis = theme.getEmojis()
 //        let randomIndex = Int.random(in: 4..<themeEmojis.endIndex)
 //        let newEmojis = Array(themeEmojis[0..<randomIndex])
@@ -58,50 +61,20 @@ struct EmojiMemoryGameView: View {
 //        emojis = (newEmojis + newEmojis).shuffled()
 //        cardCount = emojis.count
 //    }
-
-    var themeChoosingButtons: some View {
-        HStack(
-            alignment: .bottom,
-            spacing: 48
-        ) {
-            let themes = ThemeChooserType.allCases
-            ForEach(themes.indices, id: \.self) { index in
-                let theme = themes[index]
-                themeChoosingButton(
-                    isSelected: true,
-                    description: theme.getDescription(),
-                    image: theme.getImage(),
-                    onTap: {
-                        viewModel.shuffle()
-                    }
-                )
-            }
-        }
-    }
-
-    func themeChoosingButton(
-        isSelected: Bool,
-        description: String,
-        image: String,
-        onTap: @escaping () -> Void
-    ) -> some View {
-        VStack {
-            Group {
-                Button(
-                    action: {
-                        onTap()
-                    }, label: {
-                        Image(systemName: image)
-                    }
-                ).font(.title)
-                Text(description)
-            }.foregroundColor(isSelected ? .blue : .gray)
-        }
-        .imageScale(.medium)
-        .foregroundColor(.blue)
-    }
 }
 
 #Preview {
     EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+}
+
+struct GrowingButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .background(Color.orange)
+            .foregroundStyle(.white)
+            .clipShape(Capsule())
+            .scaleEffect(configuration.isPressed ? 1.2 : 1)
+            .animation(.easeOut(duration: 0.5), value: configuration.isPressed)
+    }
 }
