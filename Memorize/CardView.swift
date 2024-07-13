@@ -8,14 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct CardView : View {
-    
+struct CardView: View {
     let card: MemoryGame<String>.Card
-    
+
     init(_ card: MemoryGame<String>.Card) {
         self.card = card
     }
-    
+
     var body: some View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 12)

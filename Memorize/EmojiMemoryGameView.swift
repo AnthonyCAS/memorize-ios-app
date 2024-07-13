@@ -9,12 +9,12 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
-    private let minCardCount = 8
 
     var body: some View {
         VStack {
             Text("\(viewModel.themeName) Memorize!")
                 .font(.largeTitle)
+                .foregroundColor(viewModel.themeColor)
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
@@ -24,7 +24,7 @@ struct EmojiMemoryGameView: View {
                 Text("New Game")
                     .fontWeight(.medium)
             }
-            .buttonStyle(GrowingButton())
+            .buttonStyle(GrowingButton(color: viewModel.themeColor))
             .padding(8)
         }
         .padding()
@@ -44,7 +44,7 @@ struct EmojiMemoryGameView: View {
                     }
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(viewModel.themeColor)
     }
 }
 
@@ -53,10 +53,12 @@ struct EmojiMemoryGameView: View {
 }
 
 struct GrowingButton: ButtonStyle {
+    let color: Color
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(Color.orange)
+            .background(color)
             .foregroundStyle(.white)
             .clipShape(Capsule())
             .scaleEffect(configuration.isPressed ? 1.2 : 1)

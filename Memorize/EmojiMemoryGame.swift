@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
     @Published private var model: MemoryGame<String>?
@@ -32,6 +33,15 @@ class EmojiMemoryGame: ObservableObject {
         chosenTheme.name
     }
     
+    var themeColor: Color {
+        switch chosenTheme.color {
+        case "blue": .blue
+        case "gray": .gray
+        case "orange": .orange
+        default: .white
+        }
+    }
+    
     var cards: [MemoryGame<String>.Card] {
         model?.cards ?? []
     }
@@ -48,6 +58,6 @@ class EmojiMemoryGame: ObservableObject {
     
     func startNewGame() {
         chosenTheme = MemoryGameTheme.getRandomTheme()
-        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)        
+        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
     }
 }
