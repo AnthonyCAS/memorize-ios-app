@@ -13,9 +13,12 @@ class EmojiMemoryGame: ObservableObject {
     
     private var chosenTheme: EmojiMemoryGameTheme
     
+    private let gameScoreTracker = EmojiMemoryGameTracker()
+    
     init() {
         chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
         model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
+        model?.delegate = gameScoreTracker
         model?.shuffle()
     }
 
@@ -52,6 +55,8 @@ class EmojiMemoryGame: ObservableObject {
         model?.cards ?? []
     }
     
+    var score: Int { gameScoreTracker.getScore() }
+    
     // MARK: - Intents
     
     func choose(_ card: MemoryGame<String>.Card) {
@@ -61,6 +66,7 @@ class EmojiMemoryGame: ObservableObject {
     func startNewGame() {
         chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
         model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
+        model?.delegate = gameScoreTracker
         shuffle()
     }
     

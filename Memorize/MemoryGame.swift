@@ -9,6 +9,8 @@ import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card]
+    
+    weak var delegate: EmojiMemoryGameDelegate?
 
     private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
@@ -27,15 +29,30 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards.append(Card(content: content, id: "\(pairIndex)a"))
             cards.append(Card(content: content, id: "\(pairIndex)b"))
         }
+        delegate?.gameDidStart()
     }
     
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
+            // only choose cards that are not faced up neither matched
             if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
                 if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+                    // here there a single card feacedUp
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                        // there is a match!
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
+                        delegate?.track(points: 2)
+                    } else {
+                        // mismatch
+                        if cards[chosenIndex].seen {
+                            delegate?.track(points: -1)
+                        }
+                        if cards[potentialMatchIndex].seen {
+                            delegate?.track(points: -1)
+                        }
+                        cards[chosenIndex].seen = true
+                        cards[potentialMatchIndex].seen = true
                     }
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
@@ -46,22 +63,26 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     mutating func shuffle() {
-        cards.shuffle()        
+        cards.shuffle()
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         var isFaceUp = false
         var isMatched = false
+        var seen = false
         let content: CardContent
         
         let id: String
         var debugDescription: String {
-            "\(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "")"
+            """
+            \(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "") \(seen ? "seen" : "")
+            """
         }
     }
 }
 
 extension Array {
+    // return the first element in the list only if there is a single element
     var only: Element? {
         count == 1 ? first : nil
     }
