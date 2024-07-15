@@ -22,13 +22,18 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    init(numberOfPairOfCards: Int, cardContentFactory: (Int) -> CardContent) {
+    init(
+        numberOfPairOfCards: Int,
+        memoryGameTracker: EmojiMemoryGameDelegate,
+        cardContentFactory: (Int) -> CardContent
+    ) {
         cards = []
         for pairIndex in 0 ..< max(4, numberOfPairOfCards) {
             let content = cardContentFactory(pairIndex)
             cards.append(Card(content: content, id: "\(pairIndex)a"))
             cards.append(Card(content: content, id: "\(pairIndex)b"))
         }
+        delegate = memoryGameTracker
         delegate?.gameDidStart()
     }
     

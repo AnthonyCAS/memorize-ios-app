@@ -17,14 +17,22 @@ class EmojiMemoryGame: ObservableObject {
     
     init() {
         chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
-        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
-        model?.delegate = gameScoreTracker
+        model = EmojiMemoryGame.makeMemoryGameModel(
+            by: chosenTheme,
+            memoryGameTracker: gameScoreTracker
+        )
         model?.shuffle()
     }
 
-    private static func makeMemoryGameModel(by theme: EmojiMemoryGameTheme) -> MemoryGame<String> {
+    private static func makeMemoryGameModel(
+        by theme: EmojiMemoryGameTheme,
+        memoryGameTracker: EmojiMemoryGameTracker
+    ) -> MemoryGame<String> {
         let suffledEmojis = theme.emojis.shuffled()
-        return MemoryGame(numberOfPairOfCards: theme.numberOfPairs) { pairIndex in
+        return MemoryGame(
+            numberOfPairOfCards: theme.numberOfPairs,
+            memoryGameTracker: memoryGameTracker
+        ) { pairIndex in
             if suffledEmojis.indices.contains(pairIndex) {
                 suffledEmojis[pairIndex]
             } else {
@@ -65,8 +73,10 @@ class EmojiMemoryGame: ObservableObject {
     
     func startNewGame() {
         chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
-        model = EmojiMemoryGame.makeMemoryGameModel(by: chosenTheme)
-        model?.delegate = gameScoreTracker
+        model = EmojiMemoryGame.makeMemoryGameModel(
+            by: chosenTheme,
+            memoryGameTracker: gameScoreTracker
+        )
         shuffle()
     }
     

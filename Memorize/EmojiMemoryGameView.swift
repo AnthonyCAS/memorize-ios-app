@@ -11,11 +11,8 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
 
     var body: some View {
-        VStack {
-            Text("\(viewModel.themeName) Memorize! \(viewModel.score)")
-                .font(.largeTitle)
-                .fontWeight(.medium)
-                .foregroundColor(viewModel.themeColor)
+        VStack(spacing: 0) {
+            header
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
@@ -26,9 +23,30 @@ struct EmojiMemoryGameView: View {
                     .fontWeight(.medium)
             }
             .buttonStyle(GrowingButton(color: viewModel.themeColor))
-            .padding(8)
         }
         .padding()
+    }
+
+    private var header: some View {
+        HStack(alignment: .top) {
+            VStack {
+                Text("\(viewModel.themeName) \nMemorize!")
+                    .font(.largeTitle)
+                    .fontWeight(.semibold)
+                    .foregroundColor(viewModel.themeColor)
+            }
+            Spacer()
+            VStack {
+                Text("score")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(viewModel.themeColor)
+                Text("\(viewModel.score)")
+                    .font(.system(size: 64))
+                    .fontWeight(.semibold)
+                    .foregroundColor(viewModel.themeColor)
+            }
+        }
     }
 
     private var cards: some View {
