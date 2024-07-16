@@ -14,10 +14,8 @@ struct EmojiMemoryGameView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-            ScrollView {
-                cards
-                    .animation(.default, value: viewModel.cards)
-            }
+            cards
+                .animation(.default, value: viewModel.cards)
             Spacer()
             Button(action: viewModel.startNewGame) {
                 Text("New Game")
@@ -51,20 +49,46 @@ struct EmojiMemoryGameView: View {
     }
 
     private var cards: some View {
-        LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 80), spacing: 0)],
-            spacing: 0
-        ) {
-            ForEach(viewModel.cards) { card in
-                CardView(card)
-                    .aspectRatio(cardAspectRatio, contentMode: .fit)
-                    .padding(4)
-                    .onTapGesture {
-                        viewModel.choose(card)
-                    }
+        GeometryReader { geometry in
+            let gridItemSize = computeGridItemWidthThatFits(
+                count: viewModel.cards.count,
+                size: geometry.size,
+                aspectRatio: cardAspectRatio
+            )
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)],
+                spacing: 0
+            ) {
+                ForEach(viewModel.cards) { card in
+                    CardView(card)
+                        .aspectRatio(cardAspectRatio, contentMode: .fit)
+                        .padding(4)
+                        .onTapGesture {
+                            viewModel.choose(card)
+                        }
+                }
             }
+            .foregroundColor(viewModel.themeColor)
         }
-        .foregroundColor(viewModel.themeColor)
+    }
+
+    private func computeGridItemWidthThatFits(
+        count: Int,
+        size: CGSize,
+        aspectRatio: CGFloat
+    ) -> CGFloat {
+        let count = CGFloat(count)
+        var columnCount = 1.0
+        repeat {
+            let width = size.width / columnCount
+            let height = width / aspectRatio
+            let rowCount = (count / columnCount).rounded(.up)
+            if rowCount * height < size.height {
+                return width.rounded(.down)
+            }
+            columnCount += 1
+        } while columnCount < count
+        return min(size.width / count, size.height * aspectRatio).rounded(.down)
     }
 }
 
