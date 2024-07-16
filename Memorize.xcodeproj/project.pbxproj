@@ -17,6 +17,7 @@
 		51E927282C3C64240086E2EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51E927272C3C64240086E2EF /* Assets.xcassets */; };
 		51E9272C2C3C64240086E2EF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51E9272B2C3C64240086E2EF /* Preview Assets.xcassets */; };
 		51EDFD902C46C93500F1711D /* GrowingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EDFD8F2C46C93500F1711D /* GrowingButton.swift */; };
+		51EDFD922C46E16100F1711D /* AspectLazyVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51EDFD912C46E16100F1711D /* AspectLazyVGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		51E927292C3C64240086E2EF /* Memorize.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Memorize.entitlements; sourceTree = "<group>"; };
 		51E9272B2C3C64240086E2EF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		51EDFD8F2C46C93500F1711D /* GrowingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowingButton.swift; sourceTree = "<group>"; };
+		51EDFD912C46E16100F1711D /* AspectLazyVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectLazyVGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 			children = (
 				51E927232C3C64230086E2EF /* MemorizeApp.swift */,
 				51E927252C3C64230086E2EF /* EmojiMemoryGameView.swift */,
+				51EDFD912C46E16100F1711D /* AspectLazyVGrid.swift */,
 				51E927272C3C64240086E2EF /* Assets.xcassets */,
 				51E927292C3C64240086E2EF /* Memorize.entitlements */,
 				51E9272A2C3C64240086E2EF /* Preview Content */,
@@ -159,6 +162,7 @@
 			files = (
 				514DC7B02C3F487D00DE8291 /* MemoryGame.swift in Sources */,
 				51E927262C3C64230086E2EF /* EmojiMemoryGameView.swift in Sources */,
+				51EDFD922C46E16100F1711D /* AspectLazyVGrid.swift in Sources */,
 				51CE2E9A2C4496EB00AA7C88 /* MemoryGameScoreTracker.swift in Sources */,
 				5119A1212C3E42F1004D07AC /* EmojiMemoryGameTheme.swift in Sources */,
 				5119A11F2C3E26C7004D07AC /* CardView.swift in Sources */,
