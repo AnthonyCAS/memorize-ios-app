@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
+    private let cardAspectRatio: CGFloat = 2 / 3
 
     var body: some View {
         VStack(spacing: 0) {
@@ -56,7 +57,7 @@ struct EmojiMemoryGameView: View {
         ) {
             ForEach(viewModel.cards) { card in
                 CardView(card)
-                    .aspectRatio(2 / 3, contentMode: .fit)
+                    .aspectRatio(cardAspectRatio, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
                         viewModel.choose(card)
@@ -69,18 +70,4 @@ struct EmojiMemoryGameView: View {
 
 #Preview {
     EmojiMemoryGameView(viewModel: EmojiMemoryGame())
-}
-
-struct GrowingButton: ButtonStyle {
-    let color: Color
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding()
-            .background(color)
-            .foregroundStyle(.white)
-            .clipShape(Capsule())
-            .scaleEffect(configuration.isPressed ? 1.2 : 1)
-            .animation(.easeOut(duration: 0.5), value: configuration.isPressed)
-    }
 }

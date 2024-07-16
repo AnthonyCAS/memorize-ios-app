@@ -9,21 +9,6 @@ import Foundation
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    @Published private var model: MemoryGame<String>?
-    
-    private var chosenTheme: EmojiMemoryGameTheme
-    
-    private let gameScoreTracker = EmojiMemoryGameTracker()
-    
-    init() {
-        chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
-        model = EmojiMemoryGame.makeMemoryGameModel(
-            by: chosenTheme,
-            memoryGameTracker: gameScoreTracker
-        )
-        model?.shuffle()
-    }
-
     private static func makeMemoryGameModel(
         by theme: EmojiMemoryGameTheme,
         memoryGameTracker: EmojiMemoryGameTracker
@@ -40,6 +25,10 @@ class EmojiMemoryGame: ObservableObject {
             }
         }
     }
+    
+    private var chosenTheme: EmojiMemoryGameTheme
+    private let gameScoreTracker = EmojiMemoryGameTracker()
+    @Published private var model: MemoryGame<String>?
     
     var themeName: String {
         chosenTheme.name
@@ -63,7 +52,18 @@ class EmojiMemoryGame: ObservableObject {
         model?.cards ?? []
     }
     
-    var score: Int { gameScoreTracker.getScore() }
+    var score: Int {
+        gameScoreTracker.getScore()
+    }
+    
+    init() {
+        chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
+        model = EmojiMemoryGame.makeMemoryGameModel(
+            by: chosenTheme,
+            memoryGameTracker: gameScoreTracker
+        )
+        model?.shuffle()
+    }
     
     // MARK: - Intents
     
