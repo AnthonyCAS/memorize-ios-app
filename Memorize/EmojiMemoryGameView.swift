@@ -10,11 +10,14 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     private let cardAspectRatio: CGFloat = 2 / 3
+    private let spacing: CGFloat = 4
+    private let scoreFontSize: CGFloat = 64
 
     var body: some View {
         VStack(spacing: 0) {
             header
             cards
+                .foregroundColor(viewModel.themeColor)
                 .animation(.default, value: viewModel.cards)
             Spacer()
             Button(action: viewModel.startNewGame) {
@@ -41,7 +44,7 @@ struct EmojiMemoryGameView: View {
                     .fontWeight(.bold)
                     .foregroundColor(viewModel.themeColor)
                 Text("\(viewModel.score)")
-                    .font(.system(size: 64))
+                    .font(.system(size: scoreFontSize))
                     .fontWeight(.semibold)
                     .foregroundColor(viewModel.themeColor)
             }
@@ -51,12 +54,11 @@ struct EmojiMemoryGameView: View {
     private var cards: some View {
         AspectLazyVGrid(viewModel.cards, aspectRatio: cardAspectRatio) { card in
             CardView(card)                
-                .padding(4)
+                .padding(spacing)
                 .onTapGesture {
                     viewModel.choose(card)
                 }
         }
-        .foregroundColor(viewModel.themeColor)
     }
 }
 
