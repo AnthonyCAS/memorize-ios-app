@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EmojiMemoryGameView: View {
+    typealias Card = MemoryGame<String>.Card
     @ObservedObject var viewModel: EmojiMemoryGame
     private let cardAspectRatio: CGFloat = 2 / 3
     private let spacing: CGFloat = 4
@@ -18,9 +19,14 @@ struct EmojiMemoryGameView: View {
             header
             cards
                 .foregroundColor(viewModel.themeColor)
-                .animation(.default, value: viewModel.cards)
             Spacer()
-            Button(action: viewModel.startNewGame) {
+            Button(
+                action: {
+                    withAnimation {
+                        viewModel.startNewGame()
+                    }
+                }
+            ) {
                 Text("New Game")
                     .fontWeight(.medium)
             }
@@ -47,6 +53,7 @@ struct EmojiMemoryGameView: View {
                     .font(.system(size: scoreFontSize))
                     .fontWeight(.semibold)
                     .foregroundColor(viewModel.themeColor)
+                    .animation(nil)
             }
         }
     }
@@ -55,10 +62,17 @@ struct EmojiMemoryGameView: View {
         AspectLazyVGrid(viewModel.cards, aspectRatio: cardAspectRatio) { card in
             CardView(card)                
                 .padding(spacing)
+                .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
                 .onTapGesture {
-                    viewModel.choose(card)
+                    withAnimation {
+                        viewModel.choose(card)
+                    }
                 }
         }
+    }
+    
+    private func scoreChange(causedBy card: Card) -> Int {
+        0
     }
 }
 
