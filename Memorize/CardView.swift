@@ -17,25 +17,34 @@ struct CardView: View {
     }
 
     var body: some View {
-        Pie(endAngle: .degrees(180))
-            .opacity(Constants.Pie.opacity)
-            .overlay {
-                Text(card.content)
-                    .font(.system(size: Constants.FontSize.largest))
-                    .minimumScaleFactor(Constants.FontSize.scaleFator)
-                    .multilineTextAlignment(.center)
-                    .aspectRatio(1, contentMode: .fit)
+        TimelineView(.animation(minimumInterval: 0.1)) { _ in
+            if card.isFaceUp || !card.isMatched {
+                Pie(endAngle: .degrees(card.bonusPercentRemaining * 360))
+                    .opacity(Constants.Pie.opacity)
+                    .overlay {
+                        cardContents
+                            .padding(Constants.Pie.inset)
+                    }
                     .padding(Constants.Pie.inset)
-                    .rotationEffect(.degrees(card.isMatched ? 360 : 0))
-                    .animation(.spin(duration: 2), value: card.isMatched)
+                    .cardify(isFaceUp: card.isFaceUp)
+                    .transition(.scale)
+            } else {
+                Color.clear
             }
-            .padding(Constants.Pie.inset)
-            .cardify(isFaceUp: card.isFaceUp)
-            .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+        }
+    }
+    
+    private var cardContents: some View {
+        Text(card.content)
+            .font(.system(size: Constants.FontSize.largest))
+            .minimumScaleFactor(Constants.FontSize.scaleFator)
+            .multilineTextAlignment(.center)
+            .aspectRatio(1, contentMode: .fit)
+            .rotationEffect(.degrees(card.isMatched ? 360 : 0))
+            .animation(.spin(while: card.isMatched, duration: 2), value: card.isMatched)
     }
 
     private struct Constants {
-
         struct FontSize {
             static let largest: CGFloat = 200
             static let smallest: CGFloat = 10
@@ -50,8 +59,12 @@ struct CardView: View {
 }
 
 extension Animation {
-    static func spin(duration: TimeInterval) -> Animation {
-        .linear(duration: duration).repeatForever(autoreverses: false)
+    static func spin(while expression: Bool, duration: TimeInterval) -> Animation {
+        if expression {
+            .linear(duration: duration).repeatForever(autoreverses: false)
+        } else {
+            .linear(duration: 0.1)
+        }
     }
 }
 

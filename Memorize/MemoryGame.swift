@@ -50,10 +50,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                         delegate?.track(points: 2)
                     } else {
                         // mismatch
-                        if cards[chosenIndex].seen {
+                        if cards[chosenIndex].hasBeenSeen {
                             delegate?.track(points: -1)
                         }
-                        if cards[potentialMatchIndex].seen {
+                        if cards[potentialMatchIndex].hasBeenSeen {
                             delegate?.track(points: -1)
                         }
                     }
@@ -72,21 +72,68 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         var isFaceUp = false {
             didSet {
+                if isFaceUp {
+                    startUsingBonusTime()
+                } else {
+                    stopUsingBonusTime()
+                }
                 if oldValue && !isFaceUp {
-                    seen = true
+                    hasBeenSeen = true
                 }
             }
         }
-        var isMatched = false
-        var seen = false
+
+        var isMatched = false {
+            didSet {
+                if isMatched {
+                    stopUsingBonusTime()
+                }
+            }
+        }
+
+        var hasBeenSeen = false
         let content: CardContent
         
         let id: String
         var debugDescription: String {
             """
-            \(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "") \(seen ? "seen" : "")
+            \(id): \(content) \(isFaceUp ? "up" : "down") \(isMatched ? "matched" : "") \(hasBeenSeen ? "seen" : "")
             """
         }
+        
+        // MARK: - Bonus Time
+        
+        private mutating func startUsingBonusTime() {
+            if isFaceUp && !isMatched && bonusPercentRemaining > 0, lastFaceUpDate == nil {
+                lastFaceUpDate = Date()
+            }
+        }
+        
+        private mutating func stopUsingBonusTime() {
+            pastFaceUpTime = faceUpTime
+            lastFaceUpDate = nil
+        }
+        
+        var bonus: Int {
+            Int(bonusTimeLimit * bonusPercentRemaining)
+        }
+
+        var bonusPercentRemaining: Double {
+            bonusTimeLimit > 0 ? max(0, (bonusTimeLimit - faceUpTime) / bonusTimeLimit) : 0
+        }
+
+        var faceUpTime: TimeInterval {
+            return if let lastFaceUpDate {
+                pastFaceUpTime + Date().timeIntervalSince(lastFaceUpDate)
+            } else {
+                pastFaceUpTime
+            }
+        }
+
+        var bonusTimeLimit: TimeInterval = 6
+        
+        var lastFaceUpDate: Date?
+        var pastFaceUpTime: TimeInterval = 0
     }
 }
 
