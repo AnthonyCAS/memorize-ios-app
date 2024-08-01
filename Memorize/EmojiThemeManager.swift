@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct EmojiThemeManager: View {
-    @ObservedObject var themeStore: EmojiThemeStore
+    @ObservedObject var store: EmojiThemeStore
     @State private var selectedTheme: EmojiTheme?
 
     var body: some View {
         NavigationSplitView {
-            List(themeStore.themes, selection: $selectedTheme) { theme in
+            List(store.themes, selection: $selectedTheme) { theme in
                 ThemeStoreView(theme: theme)
                     .tag(theme)
             }
             .onAppear {
-                selectedTheme = themeStore.themes.first
+                selectedTheme = store.themes.first
             }
         } detail: {
-//            if let selectedStore {
-//                EditablePaletteList(store: selectedStore)
-//            }
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            if let selectedTheme, let index = store.themes.firstIndex(where: { $0.id == selectedTheme.id }) {
+                EmojiThemeEditor(theme: $store.themes[index])
+                    .environmentObject(store)
+            } else {
+                Text("Choose a Theme")
+            }
         }
     }
 }
@@ -38,7 +40,7 @@ struct ThemeStoreView: View {
                 Text(theme.name)
                 Spacer()
                 Circle()
-                    .foregroundColor(.green)
+                    .foregroundColor(Color(rgba:theme.color))
                     .frame(width: colorShapeSize, height: colorShapeSize)
                 Text("pairs: \(theme.numberOfPairs)")
             }
@@ -48,5 +50,5 @@ struct ThemeStoreView: View {
 }
 
 #Preview {
-    EmojiThemeManager(themeStore: EmojiThemeStore())
+    EmojiThemeManager(store: EmojiThemeStore())
 }
