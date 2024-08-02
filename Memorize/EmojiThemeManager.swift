@@ -9,29 +9,31 @@ import SwiftUI
 
 struct EmojiThemeManager: View {
     @ObservedObject var store: EmojiThemeStore
-    @State private var selectedTheme: EmojiTheme?
+    @State private var selectedThemeId: EmojiTheme.ID?
 
     var body: some View {
         NavigationSplitView {
             VStack {
                 Text("Memorize Themes")
                     .font(.title)
-                List(store.themes, selection: $selectedTheme) { theme in
+                List(store.themes, selection: $selectedThemeId) { theme in
                     ThemeStoreView(theme: theme)
-                        .tag(theme)
+                        .tag(theme.id)
                 }
                 .onAppear {
-                    selectedTheme = store.themes.first
+                    selectedThemeId = store.themes.first?.id
+                }
+                AnimatedActionButton("Add New Theme") {
+                    store.insert(name: "", emojis: "", at: 0)
+                    selectedThemeId = store.themes.first?.id
                 }
             }
         } detail: {
-            if let selectedTheme, let index = store.themes.firstIndex(where: { $0.id == selectedTheme.id }) {
+            if let selectedThemeId, let index = store.themes.firstIndex(where: { $0.id == selectedThemeId }) {
                 EmojiThemeEditor(
                     theme: $store.themes[index],
                     onDelete: {
-                        if let index = store.themes.firstIndex(of: selectedTheme) {
-                            store.themes.remove(at: index)
-                        }
+                        store.themes.remove(at: index)
                     }
                 )
             } else {
@@ -50,7 +52,7 @@ struct ThemeStoreView: View {
                 Text(theme.name)
                 Spacer()
                 Circle()
-                    .foregroundColor(Color(rgba:theme.color))
+                    .foregroundColor(Color(rgba: theme.color))
                     .frame(width: colorShapeSize, height: colorShapeSize)
                 Text("pairs: \(theme.numberOfPairs)")
             }

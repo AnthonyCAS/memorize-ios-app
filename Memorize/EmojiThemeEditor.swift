@@ -30,9 +30,11 @@ struct EmojiThemeEditor: View {
                         .focused($focused, equals: .name)
                     Spacer()
                     ColorPicker("", selection: $theme.safeColor)
-                    AnimatedActionButton(systemImage: "play.fill") {}
-                        .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
-                        .foregroundColor(Color(rgba: theme.color))
+                    AnimatedActionButton(systemImage: "play.fill") {
+                        // TODO: - display the memorize game here
+                    }
+                    .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
+                    .foregroundColor(Color(rgba: theme.color))
                 }
             }
             Section(header: Text("Emojis")) {
@@ -51,7 +53,7 @@ struct EmojiThemeEditor: View {
             }
             AnimatedActionButton("Delete", role: .destructive, action: onDelete)
         }
-        .onAppear {
+        .onAppear {            
             if theme.name.isEmpty {
                 focused = .name
             }
@@ -70,6 +72,7 @@ struct EmojiThemeEditor: View {
                             withAnimation {
                                 theme.emojis.remove(emoji.first!)
                                 emojisToAdd.remove(emoji.first!)
+                                theme.numberOfPairs = min(theme.numberOfPairs, theme.emojis.count)
                             }
                         }
                 }
@@ -84,7 +87,7 @@ struct EmojiThemeEditor: View {
             Stepper("", value: $theme.numberOfPairs, in: 0 ... theme.emojis.count)
         }
     }
-    
+
     private struct Constants {
         static let emojiInGridSize: CGFloat = 40
         static let playButtonSize: CGFloat = 32
@@ -92,7 +95,7 @@ struct EmojiThemeEditor: View {
     }
 }
 
- #Preview {
+#Preview {
     @State var theme = EmojiTheme(name: "Vehicles", emojis: "🚘")
-     return EmojiThemeEditor(theme: $theme) {}
- }
+    return EmojiThemeEditor(theme: $theme) {}
+}
