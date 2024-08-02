@@ -22,8 +22,14 @@ struct EmojiThemeManager: View {
             }
         } detail: {
             if let selectedTheme, let index = store.themes.firstIndex(where: { $0.id == selectedTheme.id }) {
-                EmojiThemeEditor(theme: $store.themes[index])
-                    .environmentObject(store)
+                EmojiThemeEditor(
+                    theme: $store.themes[index],
+                    onDelete: {
+                        if let index = store.themes.firstIndex(of: selectedTheme) {
+                            store.themes.remove(at: index)
+                        }
+                    }
+                )
             } else {
                 Text("Choose a Theme")
             }

@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct EmojiThemeEditor: View {
-    @EnvironmentObject var store: EmojiThemeStore
     @Binding var theme: EmojiTheme
-
+    let onDelete: () -> Void
+    
     @State private var emojisToAdd: String = ""
     @State private var themeColor = Color.red
     
@@ -50,6 +50,7 @@ struct EmojiThemeEditor: View {
             Section(header: Text("Cards")) {
                 pairsOfCards
             }
+            AnimatedActionButton("Delete", role: .destructive, action: onDelete)
         }
         .frame(minWidth: 300, minHeight: 350)
         .onAppear {
