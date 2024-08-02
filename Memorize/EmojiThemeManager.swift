@@ -13,12 +13,16 @@ struct EmojiThemeManager: View {
 
     var body: some View {
         NavigationSplitView {
-            List(store.themes, selection: $selectedTheme) { theme in
-                ThemeStoreView(theme: theme)
-                    .tag(theme)
-            }
-            .onAppear {
-                selectedTheme = store.themes.first
+            VStack {
+                Text("Memorize Themes")
+                    .font(.title)
+                List(store.themes, selection: $selectedTheme) { theme in
+                    ThemeStoreView(theme: theme)
+                        .tag(theme)
+                }
+                .onAppear {
+                    selectedTheme = store.themes.first
+                }
             }
         } detail: {
             if let selectedTheme, let index = store.themes.firstIndex(where: { $0.id == selectedTheme.id }) {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class EmojiThemeStore: ObservableObject {
     private let emojiThemesStoreKey = "EmojiThemesStore"
@@ -77,5 +78,12 @@ class EmojiThemeStore: ObservableObject {
     
     func removeAtCurrentCursorIndex() {
         themes.remove(at: cursorIndex)
+    }
+}
+
+extension EmojiTheme {
+    var safeColor: Color {
+        get { Color(rgba: color) }
+        set { color = RGBA(color: newValue) }
     }
 }

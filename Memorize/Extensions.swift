@@ -102,6 +102,8 @@ struct AnimatedActionButton: View {
                 Text(title)
             } else if let systemImage {
                 Image(systemName: systemImage)
+                    .resizable()
+                    .scaledToFit()
             }
         }
     }

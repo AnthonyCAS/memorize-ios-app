@@ -10,12 +10,11 @@ import SwiftUI
 struct EmojiThemeEditor: View {
     @Binding var theme: EmojiTheme
     let onDelete: () -> Void
-    
+
     @State private var emojisToAdd: String = ""
-    @State private var themeColor = Color.red
-    
-    private let emojiFont: Font = .system(size: 36)
-    
+
+    private let emojiFont: Font = .system(size: Constants.emojiFontSize)
+
     enum Focused {
         case name
         case addEmojis
@@ -30,10 +29,10 @@ struct EmojiThemeEditor: View {
                     TextField("name", text: $theme.name)
                         .focused($focused, equals: .name)
                     Spacer()
-                    ColorPicker("", selection: $themeColor)
-                }
-                .onChange(of: themeColor) {
-                    theme.color = RGBA(color: themeColor)
+                    ColorPicker("", selection: $theme.safeColor)
+                    AnimatedActionButton(systemImage: "play.fill") {}
+                        .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
+                        .foregroundColor(Color(rgba: theme.color))
                 }
             }
             Section(header: Text("Emojis")) {
@@ -52,7 +51,6 @@ struct EmojiThemeEditor: View {
             }
             AnimatedActionButton("Delete", role: .destructive, action: onDelete)
         }
-        .frame(minWidth: 300, minHeight: 350)
         .onAppear {
             if theme.name.isEmpty {
                 focused = .name
@@ -65,7 +63,7 @@ struct EmojiThemeEditor: View {
             Text("Tap to Remove Emojis")
                 .font(.caption)
                 .foregroundColor(.gray)
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 40))]) {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: Constants.emojiInGridSize))]) {
                 ForEach(theme.emojis.uniqued.map(String.init), id: \.self) { emoji in
                     Text(emoji)
                         .onTapGesture {
@@ -79,16 +77,22 @@ struct EmojiThemeEditor: View {
         }
         .font(emojiFont)
     }
-    
+
     private var pairsOfCards: some View {
         HStack {
             Text("\(theme.numberOfPairs) Pairs")
-            Stepper("", value: $theme.numberOfPairs, in: 0...theme.emojis.count)
+            Stepper("", value: $theme.numberOfPairs, in: 0 ... theme.emojis.count)
         }
+    }
+    
+    private struct Constants {
+        static let emojiInGridSize: CGFloat = 40
+        static let playButtonSize: CGFloat = 32
+        static let emojiFontSize: CGFloat = 36
     }
 }
 
-//#Preview {
-//    @State var theme = EmojiTheme(name: "Vehicles", emojis: "🚘")
-//    return EmojiThemeEditor(theme: $theme)
-//}
+ #Preview {
+    @State var theme = EmojiTheme(name: "Vehicles", emojis: "🚘")
+     return EmojiThemeEditor(theme: $theme) {}
+ }
