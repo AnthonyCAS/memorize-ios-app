@@ -142,5 +142,6 @@ struct EmojiMemoryGameView: View {
 }
 
 #Preview {
-    EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+    let theme = EmojiTheme(name: "Vehicles", emojis: "🚘")
+    return EmojiMemoryGameView(viewModel: EmojiMemoryGame(for: theme))
 }

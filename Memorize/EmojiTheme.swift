@@ -11,7 +11,6 @@ struct EmojiTheme: Codable, Identifiable {
     var name: String
     var emojis: String
     var color: RGBA = RGBA(red: 1, green: 1, blue: 1, alpha: 1)
-    // minimun number of pairs 2
     var numberOfPairs: Int = 0
     var id = UUID()
 

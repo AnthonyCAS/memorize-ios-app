@@ -12,6 +12,7 @@ struct EmojiThemeEditor: View {
     let onDelete: () -> Void
 
     @State private var emojisToAdd: String = ""
+    @State private var showGameByTheme: Bool = false
 
     private let emojiFont: Font = .system(size: Constants.emojiFontSize)
 
@@ -31,7 +32,7 @@ struct EmojiThemeEditor: View {
                     Spacer()
                     ColorPicker("", selection: $theme.safeColor)
                     AnimatedActionButton(systemImage: "play.fill") {
-                        // TODO: - display the memorize game here
+                        showGameByTheme = true
                     }
                     .frame(width: Constants.playButtonSize, height: Constants.playButtonSize)
                     .foregroundColor(Color(rgba: theme.color))
@@ -53,10 +54,13 @@ struct EmojiThemeEditor: View {
             }
             AnimatedActionButton("Delete", role: .destructive, action: onDelete)
         }
-        .onAppear {            
+        .onAppear {
             if theme.name.isEmpty {
                 focused = .name
             }
+        }
+        .navigationDestination(isPresented: $showGameByTheme) {
+            EmojiMemoryGameView(viewModel: EmojiMemoryGame(for: theme))
         }
     }
 

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5119A11F2C3E26C7004D07AC /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5119A11E2C3E26C7004D07AC /* CardView.swift */; };
-		5119A1212C3E42F1004D07AC /* EmojiMemoryGameTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5119A1202C3E42F1004D07AC /* EmojiMemoryGameTheme.swift */; };
 		514DC7AE2C3F482900DE8291 /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DC7AD2C3F482900DE8291 /* EmojiMemoryGame.swift */; };
 		514DC7B02C3F487D00DE8291 /* MemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 514DC7AF2C3F487D00DE8291 /* MemoryGame.swift */; };
 		51964CFD2C5C91EF00F9DB3B /* EmojiThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51964CFC2C5C91EF00F9DB3B /* EmojiThemeManager.swift */; };
@@ -30,7 +29,6 @@
 
 /* Begin PBXFileReference section */
 		5119A11E2C3E26C7004D07AC /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		5119A1202C3E42F1004D07AC /* EmojiMemoryGameTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGameTheme.swift; sourceTree = "<group>"; };
 		514DC7AD2C3F482900DE8291 /* EmojiMemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGame.swift; sourceTree = "<group>"; };
 		514DC7AF2C3F487D00DE8291 /* MemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGame.swift; sourceTree = "<group>"; };
 		51964CFC2C5C91EF00F9DB3B /* EmojiThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiThemeManager.swift; sourceTree = "<group>"; };
@@ -91,7 +89,6 @@
 				5119A11E2C3E26C7004D07AC /* CardView.swift */,
 				514DC7AD2C3F482900DE8291 /* EmojiMemoryGame.swift */,
 				514DC7AF2C3F487D00DE8291 /* MemoryGame.swift */,
-				5119A1202C3E42F1004D07AC /* EmojiMemoryGameTheme.swift */,
 				51CE2E992C4496EB00AA7C88 /* MemoryGameScoreTracker.swift */,
 				51EDFD8F2C46C93500F1711D /* GrowingButton.swift */,
 				51EDFD932C474A5700F1711D /* Pie.swift */,
@@ -193,7 +190,6 @@
 				51E927262C3C64230086E2EF /* EmojiMemoryGameView.swift in Sources */,
 				51EDFD922C46E16100F1711D /* AspectLazyVGrid.swift in Sources */,
 				51CE2E9A2C4496EB00AA7C88 /* MemoryGameScoreTracker.swift in Sources */,
-				5119A1212C3E42F1004D07AC /* EmojiMemoryGameTheme.swift in Sources */,
 				5119A11F2C3E26C7004D07AC /* CardView.swift in Sources */,
 				51964CFD2C5C91EF00F9DB3B /* EmojiThemeManager.swift in Sources */,
 				51E927242C3C64230086E2EF /* MemorizeApp.swift in Sources */,

@@ -22,12 +22,6 @@ class EmojiThemeStore: ObservableObject {
             }
         }
     }
-    @Published private var _cursorIndex: Int = 0
-    
-    var cursorIndex: Int {
-        get { boundsCheckedPaletteIndex(_cursorIndex) }
-        set { _cursorIndex = boundsCheckedPaletteIndex(newValue) }
-    }
     
     init() {
         if themes.isEmpty {
@@ -35,16 +29,8 @@ class EmojiThemeStore: ObservableObject {
         }
     }
     
-    private func boundsCheckedPaletteIndex(_ index: Int) -> Int {
-        var index = index % themes.count
-        if index < 0 {
-            index += themes.count
-        }
-        return index
-    }
-    
     private func insert(theme: EmojiTheme, at insertionIndex: Int? = nil) {
-        let insertionIndex = boundsCheckedPaletteIndex(insertionIndex ?? cursorIndex)
+        let insertionIndex = insertionIndex ?? 0
         if let index = themes.firstIndex(where: { $0.id == theme.id }) {
             themes.move(fromOffsets: IndexSet([index]), toOffset: insertionIndex)
             themes.replaceSubrange(insertionIndex ... insertionIndex, with: [theme])
@@ -74,10 +60,6 @@ class EmojiThemeStore: ObservableObject {
     
     func append(name: String, emojis: String) {
         append(theme: EmojiTheme(name: name, emojis: emojis))
-    }
-    
-    func removeAtCurrentCursorIndex() {
-        themes.remove(at: cursorIndex)
     }
 }
 

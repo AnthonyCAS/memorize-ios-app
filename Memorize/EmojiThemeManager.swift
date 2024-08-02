@@ -14,8 +14,18 @@ struct EmojiThemeManager: View {
     var body: some View {
         NavigationSplitView {
             VStack {
-                Text("Memorize Themes")
-                    .font(.title)
+                HStack {
+                    Text("Memorize Themes")
+                        .font(.title)
+                    Spacer()
+                    Button {
+                        store.insert(name: "", emojis: "", at: 0)
+                        selectedThemeId = store.themes.first?.id
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+                .padding()
                 List(store.themes, selection: $selectedThemeId) { theme in
                     ThemeStoreView(theme: theme)
                         .tag(theme.id)
@@ -23,12 +33,8 @@ struct EmojiThemeManager: View {
                 .onAppear {
                     selectedThemeId = store.themes.first?.id
                 }
-                AnimatedActionButton("Add New Theme") {
-                    store.insert(name: "", emojis: "", at: 0)
-                    selectedThemeId = store.themes.first?.id
-                }
             }
-        } detail: {
+        } content: {
             if let selectedThemeId, let index = store.themes.firstIndex(where: { $0.id == selectedThemeId }) {
                 EmojiThemeEditor(
                     theme: $store.themes[index],
@@ -40,6 +46,9 @@ struct EmojiThemeManager: View {
                 Text("Choose a Theme")
             }
         }
+        detail: {
+            Text("Let's Play")
+        }
     }
 }
 
@@ -49,7 +58,12 @@ struct ThemeStoreView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(theme.name)
+                if theme.name.isEmpty {
+                    Text("Insert a name")
+                        .foregroundColor(.gray)
+                } else {
+                    Text(theme.name)
+                }
                 Spacer()
                 Circle()
                     .foregroundColor(Color(rgba: theme.color))
