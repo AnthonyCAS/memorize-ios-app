@@ -9,7 +9,6 @@ import SwiftUI
 
 struct EmojiThemeManager: View {
     @ObservedObject var store: EmojiThemeStore
-    @State private var selectedThemeId: EmojiTheme.ID?
 
     var body: some View {
         NavigationSplitView {
@@ -20,22 +19,18 @@ struct EmojiThemeManager: View {
                     Spacer()
                     Button {
                         store.insert(name: "", emojis: "", at: 0)
-                        selectedThemeId = store.themes.first?.id
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
                 .padding()
-                List(store.themes, selection: $selectedThemeId) { theme in
+                List(store.themes, selection: $store.selectedThemeId) { theme in
                     ThemeStoreView(theme: theme)
                         .tag(theme.id)
                 }
-                .onAppear {
-                    selectedThemeId = store.themes.first?.id
-                }
             }
         } content: {
-            if let selectedThemeId, let index = store.themes.firstIndex(where: { $0.id == selectedThemeId }) {
+            if let index = store.firstThemeIndex {
                 EmojiThemeEditor(
                     theme: $store.themes[index],
                     onDelete: {
