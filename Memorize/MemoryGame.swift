@@ -28,7 +28,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         cardContentFactory: (Int) -> CardContent
     ) {
         cards = []
-        for pairIndex in 0 ..< max(4, numberOfPairOfCards) {
+        for pairIndex in 0 ..< max(0, numberOfPairOfCards) {
             let content = cardContentFactory(pairIndex)
             cards.append(Card(content: content, id: "\(pairIndex)a"))
             cards.append(Card(content: content, id: "\(pairIndex)b"))
