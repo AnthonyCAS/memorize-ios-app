@@ -12,10 +12,10 @@ class EmojiMemoryGame: ObservableObject {
     typealias Card = MemoryGame<String>.Card
     
     private static func makeMemoryGameModel(
-        by theme: EmojiMemoryGameTheme,
+        by theme: EmojiTheme,
         memoryGameTracker: EmojiMemoryGameTracker
     ) -> MemoryGame<String> {
-        let suffledEmojis = theme.emojis.shuffled()
+        let suffledEmojis = theme.emojis.uniqued.map(String.init).shuffled()
         return MemoryGame(
             numberOfPairOfCards: theme.numberOfPairs,
             memoryGameTracker: memoryGameTracker
@@ -28,7 +28,7 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    private var chosenTheme: EmojiMemoryGameTheme
+    private var chosenTheme: EmojiTheme
     private let gameScoreTracker = EmojiMemoryGameTracker()
     @Published private var model: MemoryGame<String>?
     
@@ -36,18 +36,8 @@ class EmojiMemoryGame: ObservableObject {
         chosenTheme.name
     }
     
-    // interpret emoji card color from the model into a swiftui color struct
-    // if the color is unknow a black color is used instead
     var themeColor: Color {
-        switch chosenTheme.color {
-        case "blue": .blue
-        case "brown": .brown
-        case "orange": .orange
-        case "green": .green
-        case "red": .red
-        case "yellow": .yellow
-        default: .black
-        }
+        chosenTheme.safeColor
     }
     
     var cards: [Card] {
@@ -58,8 +48,8 @@ class EmojiMemoryGame: ObservableObject {
         gameScoreTracker.getScore()
     }
     
-    init() {
-        chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
+    init(for theme: EmojiTheme) {
+        chosenTheme = theme
         model = EmojiMemoryGame.makeMemoryGameModel(
             by: chosenTheme,
             memoryGameTracker: gameScoreTracker
@@ -74,7 +64,6 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func startNewGame() {
-        chosenTheme = EmojiMemoryGameTheme.getRandomTheme()
         model = EmojiMemoryGame.makeMemoryGameModel(
             by: chosenTheme,
             memoryGameTracker: gameScoreTracker
